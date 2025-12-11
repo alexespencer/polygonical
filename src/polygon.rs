@@ -37,7 +37,7 @@ impl Polygon {
 
     /// Create a new polygon.
     ///
-    /// The vector of points must contain at least 3 elements or this will panic.
+    /// Will return an Err if points does not contain at least 3 elements
     pub fn try_new(points: Vec<Point>) -> Result<Self> {
         ensure!(
             points.len() >= 3,
