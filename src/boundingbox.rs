@@ -1,11 +1,14 @@
 use std::fmt;
 
+use getset::Getters;
+
 use crate::{point::Point, polygon::Polygon};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Getters)]
+#[getset(get = "pub")]
 pub struct BoundingBox {
-    pub a: Point,
-    pub b: Point,
+    a: Point,
+    b: Point,
 }
 
 impl BoundingBox {
@@ -36,7 +39,7 @@ impl BoundingBox {
             Point::new(self.b.x, self.b.y),
             Point::new(self.b.x, self.a.y),
         ];
-        Polygon::new(points)
+        Polygon::new_unchecked(points)
     }
 
     pub fn intersects(&self, other: &BoundingBox) -> bool {
