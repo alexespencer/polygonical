@@ -1,14 +1,34 @@
-use eyre::ensure;
-use eyre::Result;
 use float_cmp::approx_eq;
 use getset::Getters;
 
 use crate::{boundingbox::BoundingBox, geom, point::Point};
 use std::{
+    error::Error,
     fmt::{self, Display},
     iter::zip,
     mem,
 };
+
+#[derive(Debug)]
+pub enum PolygonError {
+    TooFewPoints(usize),
+}
+
+impl fmt::Display for PolygonError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            PolygonError::TooFewPoints(n) => {
+                write!(
+                    f,
+                    "Trying to create a polygon with {} points. You need at least 3",
+                    n
+                )
+            }
+        }
+    }
+}
+
+impl Error for PolygonError {}
 
 /// Polygon describes the points around the edge of a shape. It can only contain a single path, no holes
 #[allow(clippy::len_without_is_empty)] // a polygon can never be empty so an is_empty function would always return false.
@@ -20,7 +40,7 @@ pub struct Polygon {
 }
 
 impl Polygon {
-    /// Create a new polygon.
+    /// Create a new polygon
     ///
     /// The vector of points must contain at least 3 elements or this will panic.
     pub fn new_unchecked(points: Vec<Point>) -> Self {
@@ -37,15 +57,11 @@ impl Polygon {
 
     /// Create a new polygon.
     ///
-    /// The vector of points must contain at least 3 elements or this will panic.
-    pub fn try_new(points: Vec<Point>) -> Result<Self> {
-        ensure!(
-            points.len() >= 3,
-            format!(
-                "Trying to create a polygon with {} points. You need at least 3",
-                points.len()
-            )
-        );
+    /// The vector of points must contain at least 3 elements or this will return an error.
+    pub fn try_new(points: Vec<Point>) -> Result<Self, PolygonError> {
+        if points.len() < 3 {
+            return Err(PolygonError::TooFewPoints(points.len()));
+        }
 
         let bounds = BoundingBox::from_points(&points);
         Ok(Polygon { points, bounds })
