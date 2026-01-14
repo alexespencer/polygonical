@@ -78,7 +78,7 @@ Things this library won't do.
 
 * 3d Geometry
 * Output to things like svg (that is for another library)
-* Coordinate system transforms (see [Sguaba](https://github.com/helsing-ai/sguaba))
+* Coordinate system transforms, epsg codes, pixel space to world space etc.
 * epsg codes, pixel space to world space etc.
 
 ## Design goals
