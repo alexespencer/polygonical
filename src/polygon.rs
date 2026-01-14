@@ -40,7 +40,7 @@ pub struct Polygon {
 }
 
 impl Polygon {
-    /// Create a new polygon
+    /// Create a new polygon.
     ///
     /// The vector of points must contain at least 3 elements or this will panic.
     pub fn new_unchecked(points: Vec<Point>) -> Self {
