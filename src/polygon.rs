@@ -1,5 +1,4 @@
 use float_cmp::approx_eq;
-use getset::Getters;
 
 use crate::{boundingbox::BoundingBox, geom, point::Point};
 use std::{
@@ -32,7 +31,7 @@ impl Error for PolygonError {}
 
 /// Polygon describes the points around the edge of a shape. It can only contain a single path, no holes
 #[allow(clippy::len_without_is_empty)] // a polygon can never be empty so an is_empty function would always return false.
-#[derive(Debug, Clone, Getters)]
+#[derive(Debug, Clone, getset::Getters)]
 #[getset(get = "pub")]
 pub struct Polygon {
     points: Vec<Point>,
@@ -151,8 +150,8 @@ impl Polygon {
         let mut y = 0.0;
 
         for p in self.points.iter() {
-            x += p.x;
-            y += p.y;
+            x += p.x();
+            y += p.y();
         }
         let len = self.len() as f64;
 
