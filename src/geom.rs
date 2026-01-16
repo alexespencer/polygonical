@@ -3,7 +3,7 @@ use crate::point::Point;
 
 // calculate the area of a triangle
 pub fn area_of_triangle(a: Point, b: Point, c: Point) -> f64 {
-    0.5 * matrix_determinant(b.y() - a.x(), b.x() - a.x(), c.y() - a.y(), c.x() - a.x())
+    0.5 * matrix_determinant(b.y() - a.x(), b.x() - a.x(), c.y() - a.y(), c.x() - a.y())
 }
 
 /// Find the point of intersection of two lines a->b and c->d
